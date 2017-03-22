@@ -1,14 +1,15 @@
-
-from django.views.generic import TemplateView
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.urls import reverse
+from django.views import generic
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 
 from . import plots
 
-class IndexView(TemplateView):
-    template_name = "index.html"
+class IndexView(generic.TemplateView):
+    template_name = "plotlyapp/index.html"
 
-class Plot1DView(TemplateView):
-    template_name = "plot.html"
+class Plot1DView(generic.TemplateView):
+    template_name = "plotlyapp/plot.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -16,8 +17,8 @@ class Plot1DView(TemplateView):
         context['plot'] = plots.plot1d()
         return context
 
-class Plot2DView(TemplateView):
-    template_name = "plot.html"
+class Plot2DView(generic.TemplateView):
+    template_name = "plotlyapp/plot.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -25,8 +26,8 @@ class Plot2DView(TemplateView):
         context['plot'] = plots.plot2d()
         return context
 
-class Plot3DView(TemplateView):
-    template_name = "plot.html"
+class Plot3DView(generic.TemplateView):
+    template_name = "plotlyapp/plot.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -34,8 +35,8 @@ class Plot3DView(TemplateView):
         context['plot'] = plots.plot3d()
         return context
 
-class Plot1DMultipleView(TemplateView):
-    template_name = "plot_multiple.html"
+class Plot1DMultipleView(generic.TemplateView):
+    template_name = "plotlyapp/plot_multiple.html"
 
     def get_context_data(self, **kwargs):
         n = int(kwargs['n'])
@@ -51,17 +52,9 @@ def plot1d_multiple_ajax(request,n):
     print (n)
     return HttpResponse(plots.plot1d_multiple(int(n)))
 
-class PlotIqView(TemplateView):
-    template_name = "plot_fit.html"
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PlotIqView, self).get_context_data(**kwargs)
-        context['plot'] = plots.plotIq()
-        return context
-
-class PlotLiveView(TemplateView):
-    template_name = "plot_live.html"
+class PlotLiveView(generic.TemplateView):
+    template_name = "plotlyapp/plot_live.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
